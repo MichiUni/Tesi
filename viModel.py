@@ -88,12 +88,12 @@ class BayesianEmulator(VIModule):
         super().__init__()
         self.hidden = MeanFieldGaussianFeedForward(
             in_features=2,
-            out_features=40,
+            out_features=20,
             weightPriorSigma=weight_sigma,
             biasPriorSigma=bias_sigma
         )
         self.output = MeanFieldGaussianFeedForward(
-            in_features=40,
+            in_features=20,
             out_features=3,
             weightPriorSigma=weight_sigma,
             biasPriorSigma=bias_sigma
