@@ -103,3 +103,13 @@ class BayesianEmulator(VIModule):
         h = torch.relu(self.hidden(x, stochastic=stochastic))
         out = self.output(h, stochastic=stochastic)
         return out
+
+class StandardEmulator(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.hidden = nn.Linear(2, 20)
+        self.output = nn.Linear(20, 3)
+
+    def forward(self, x):
+        h = torch.relu(self.hidden(x))
+        return self.output(h)
