@@ -65,7 +65,7 @@ def analisi_posterior_standard(file_csv="posterior_standard_top0_5perc_db.csv", 
     plt.savefig("heatmap_distanza_media.png")
     plt.close()
 
-    print("✅ Grafici generati e salvati.")
+    print("Grafici generati e salvati.")
 
 if __name__ == "__main__":
     analisi_posterior_standard("posterior_standard_top0_5perc.csv", theta_true=2423.8)
