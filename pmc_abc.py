@@ -7,11 +7,9 @@ import seaborn as sns
 from time import time
 from viModel import BayesianEmulator
 
-# 1️⃣ Parametri osservati
+
 freq_obs = np.array([32.63, 96.73, 208.61])  # Frequenze osservate in Hz
 sigma_noise = 0.4  # Deviazione standard del rumore misurativo
-
-# 2️⃣ Carica la tua rete bayesiana
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -19,14 +17,14 @@ MyNN = BayesianEmulator().to(device)
 MyNN.load_state_dict(torch.load("modello_addestrato.pt", map_location=device))
 MyNN.eval()
 
-# 3️⃣ Funzione che usa la tua rete (campionando dai pesi ad ogni chiamata)
+#Funzione che usa la tua rete (campionando dai pesi ad ogni chiamata)
 def forward_network(theta, d_elle, stochastic=True):
     tens = torch.FloatTensor([d_elle, theta]).unsqueeze(0).to(device)
     with torch.no_grad():
         output = MyNN(tens, stochastic=stochastic).cpu().numpy().flatten()
     return output
 
-# 4️⃣ Funzione distanza standardizzata (come nel paper)
+#Funzione distanza standardizzata
 def simulate_dist(obs, theta_delle_batch):
     dist = np.zeros(theta_delle_batch.shape[0])
     for i, (theta, d_elle) in enumerate(theta_delle_batch):
@@ -36,7 +34,7 @@ def simulate_dist(obs, theta_delle_batch):
         dist[i] = np.linalg.norm(standardized_diff)
     return dist
 
-# 5️⃣ Densità di proposta per PMC
+#Densità di proposta per PMC
 def proposal_density(theta, last_theta, last_w, cov_matrix):
     n_new = theta.shape[0]
     n_old = last_theta.shape[0]
@@ -46,7 +44,7 @@ def proposal_density(theta, last_theta, last_w, cov_matrix):
     d = np.array(d)
     return np.sum(d, axis=0)
 
-# 6️⃣ Campionamento con ABC
+#Campionamento con ABC
 def sample_abc_posterior(n, eps, obs, batch_size=1000, use_prior=True, last_theta=None, last_w=None):
     sims_count = 0
     if not use_prior:
@@ -86,7 +84,7 @@ def sample_abc_posterior(n, eps, obs, batch_size=1000, use_prior=True, last_thet
 
     return theta_accepted, dist_accepted, w, sims_count
 
-# 7️⃣ Algoritmo PMC-ABC
+#Algoritmo PMC-ABC
 def abc_pmc(obs, n_to_accept, prob_fraction, batch_size=1000, max_mins=20):
     start_time = time()
     iteration = 1
@@ -128,7 +126,6 @@ def abc_pmc(obs, n_to_accept, prob_fraction, batch_size=1000, max_mins=20):
 
     return df, history
 
-# 8️⃣ LANCIO
 if __name__ == "__main__":
     df_final, history = abc_pmc(freq_obs, n_to_accept=500, prob_fraction=0.5, batch_size=10000, max_mins=5)
     plt.plot(np.array(history)[:, 1], color='r', linewidth=2)

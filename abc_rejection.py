@@ -73,7 +73,6 @@ def estrai_top_percentuale(quantile=0.01, db_file="risultati_abc05.db", output_f
 
     print(f"Salvati {top_n} risultati in '{output_file}'")
 
-# Esecuzione principale
 if __name__ == "__main__":
     run_abc_to_db(S=1_000_000, db_file="risultati_abc.db")
     estrai_top_percentuale(quantile=0.005, db_file="risultati_abc.db", output_file="posterior_top0_5perc_db.csv")

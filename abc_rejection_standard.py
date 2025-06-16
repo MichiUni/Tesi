@@ -4,7 +4,6 @@ import sqlite3
 import csv
 from viModel import StandardEmulator
 
-# Setup
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 y_obs = torch.tensor([32.6263, 96.7327, 208.6077], dtype=torch.float32).to(device)
 
@@ -64,7 +63,6 @@ def estrai_top_percentuale(quantile=0.005, db_file="risultati_standard_abc.db", 
 
     print(f"Salvati {top_n} risultati in '{output_file}'")
 
-# Esecuzione
 if __name__ == "__main__":
     run_abc_to_db(S=1_000_000, db_file="risultati_standard_abc.db")
     estrai_top_percentuale(quantile=0.005, db_file="risultati_standard_abc.db", output_file="posterior_standard_top0_5perc.csv")

@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from viModel import BayesianEmulator, StandardEmulator
 
-# Impostazioni generali
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 bayesian_model = BayesianEmulator().to(device)
 standard_model = StandardEmulator().to(device)
@@ -31,7 +30,6 @@ def get_standard_params(layer):
         bias = None
     return weight, bias
 
-# Estrai i parametri
 bayesian_layers = [bayesian_model.hidden, bayesian_model.output]
 standard_layers = [standard_model.hidden, standard_model.output]
 
@@ -56,7 +54,7 @@ for idx, (bayes_layer, std_layer) in enumerate(zip(bayesian_layers, standard_lay
         plt.tight_layout()
         plt.show()
 
-    # Plot bias (se presenti)
+    # Plot bias
     if bayes_bias_mean is not None and std_bias is not None:
         for i, (mean, sigma, std_val) in enumerate(zip(bayes_bias_mean, bayes_bias_sigma, std_bias)):
             x = np.linspace(mean - 4*sigma, mean + 4*sigma, 1000)

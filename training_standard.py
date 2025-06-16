@@ -3,21 +3,8 @@ import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
 import numpy as np
 from viModel import StandardEmulator
+from dataset import FrequencyDataset
 
-# -------------------- Dataset --------------------
-class FrequencyDataset(Dataset):
-    def __init__(self, filepath):
-        data = torch.tensor(np.loadtxt(filepath, delimiter=","), dtype=torch.float32)
-        self.x = data[:, :2]
-        self.y = data[:, 2:5]
-
-    def __len__(self):
-        return len(self.x)
-
-    def __getitem__(self, idx):
-        return self.x[idx], self.y[idx]
-
-# -------------------- Training --------------------
 def train_model():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
