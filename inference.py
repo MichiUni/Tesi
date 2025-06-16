@@ -37,5 +37,5 @@ print(f"Tempo totale inferenza test set: {end_total - start_total:.6f} secondi")
 all_means = torch.cat(all_means, dim=0).numpy()
 all_stds = torch.cat(all_stds, dim=0).numpy()
 
-#np.savetxt("predicted_means.txt", all_means, delimiter=",")
-#np.savetxt("predicted_stds.txt", all_stds, delimiter=",")
+np.savetxt("predicted_means.txt", all_means, delimiter=",")
+np.savetxt("predicted_stds.txt", all_stds, delimiter=",")
