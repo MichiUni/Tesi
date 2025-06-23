@@ -39,7 +39,7 @@ def analisi_posterior_standard(file_csv="posterior_standard_top0_5perc_db.csv", 
     plt.grid(True)
     plt.legend()
     plt.tight_layout()
-    plt.savefig("zoom_theta_2000_3000.png")
+    plt.savefig("zoom_theta_2000_3000_standard.png")
     plt.close()
 
     # 4. Heatmap distanza media (x vs θ)
